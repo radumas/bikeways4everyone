@@ -496,11 +496,16 @@
         dataType: 'json',
         success: function(responseData, textStatus, jqXHR) {
           console.log("Data saved");
+          // Alerts are system-owned (ui-wise) dialogs. 
+          // There will probably be an 'OK' button for user to confirm that
+          // they've seen the message.
+          // Alternatively you could use the Jquery dialogs like you're doing.
+          alert('Woohoo! Your input has been saved! Thank you!');
 
         },
         error: function (responseData, textStatus, errorThrown) {
-
-            console.log("Problem saving the data");
+          console.log("Problem saving the data");
+          alert('Oh no! Your input wasn\'t saved :-(\n' + errorThrown + ': ' + textStatus);
         }
       });
         

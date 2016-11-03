@@ -84,6 +84,10 @@
     	<div id="save" class="circle type1 icon-hover tooltip" title="Save Route" style="inline-block">
     	<i class="fa fa-floppy-o fa-3x fa-inverse" style="margin-top: 5px;"></i></div>
 
+      <!-- I don't know where this will actually show up layout-wise. 
+      I made it here https://about.twitter.com/resources/buttons#tweet -->
+      <a href="https://twitter.com/share" class="twitter-share-button" data-size="large" data-hashtags="bikeboston">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
     </script>
 
     <script src="js/definitions.js"></script>
@@ -496,11 +500,16 @@
         dataType: 'json',
         success: function(responseData, textStatus, jqXHR) {
           console.log("Data saved");
+          // Alerts are system-owned (ui-wise) dialogs. 
+          // There will probably be an 'OK' button for user to confirm that
+          // they've seen the message.
+          // Alternatively you could use the Jquery dialogs like you're doing.
+          alert('Woohoo! Your input has been saved! Thank you!');
 
         },
         error: function (responseData, textStatus, errorThrown) {
-
-            console.log("Problem saving the data");
+          console.log("Problem saving the data");
+          alert('Oh no! Your input wasn\'t saved :-(\n' + errorThrown + ': ' + textStatus);
         }
       });
         

@@ -11,8 +11,8 @@
     <link rel="stylesheet" href="css/leaflet.css"  />
 <!--      /Mapbox-->
 <!--      Leaflet.draw-->
-      <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.0/leaflet.draw.css"/>
-      <script src="//cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.0/leaflet.draw.js"></script>
+      <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.9/leaflet.draw.css"/>
+      <script src="//cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.9/leaflet.draw.js"></script>
 <!--       /Leaflet.draw-->
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
@@ -99,7 +99,7 @@
 		var bounds = L.latLngBounds(L.latLng(config.south,config.west), L.latLng(config.north,config.east));
         var map = L.map('map', {
             center: config.mapFocus,
-            zoom: 13, minZoom : 13, maxzoom: 17, maxBounds : bounds, zoomControl :false });
+            zoom: 7, minZoom : 7, maxzoom: 19, maxBounds : bounds, zoomControl :false });
         map.touchZoom.enable();
         L.control.zoom({position : 'bottomleft'}).addTo(map);
 

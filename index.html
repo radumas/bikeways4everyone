@@ -11,13 +11,13 @@
     <link rel="stylesheet" href="css/leaflet.css"  />
 <!--      /Mapbox-->
 <!--      Leaflet.draw-->
-      <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.0/leaflet.draw.css"/>
-      <script src="//cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.0/leaflet.draw.js"></script>
+      <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.9/leaflet.draw.css"/>
+      <script src="//cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.9/leaflet.draw.js"></script>
 <!--       /Leaflet.draw-->
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script> 
-      
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 
@@ -25,23 +25,23 @@
     <link rel="stylesheet" href="//cdn.jsdelivr.net/leaflet.locatecontrol/0.52.0/L.Control.Locate.mapbox.min.css">
     <script src="//cdn.jsdelivr.net/leaflet.locatecontrol/0.52.0/L.Control.Locate.min.js"></script>
 <!--      /Geolocate Button-->
-	  
+
 <!--      QGIS Webmap-->
         <link rel="stylesheet" href="css/label.css" />
         <script src="js/label.js"></script>
-<!--      /QGIS Webmap-->      
+<!--      /QGIS Webmap-->
 <!--      Impromptu (for walkthrough)-->
 	  <link rel="stylesheet" href="jQuery-Impromptu/dist/jquery-impromptu.min.css" />
 	  <script src="jQuery-Impromptu/dist/jquery-impromptu.min.js"></script>
-<!--      /Impromptu                 -->      
+<!--      /Impromptu                 -->
 
   </head>
   <body>
     <div id="wrapper">
- 
+
     <div id="map" title=""></div>
-    
-    <div id="dialogGlobal" title="About You">     
+
+    <div id="dialogGlobal" title="About You">
       <form>
         <fieldset style="border: none;">
           <ul style="list-style-type: none; padding-left: 0px">
@@ -54,7 +54,7 @@
       </form>
     </div>
 
-    <div id="dialog" title="Tell Us About This">     
+    <div id="dialog" title="Tell Us About This">
       <form>
         <fieldset style="border: none;">
           <ul style="list-style-type: none; padding-left: 0px">
@@ -92,44 +92,43 @@
 		<script src="js/userconfig.js"></script>
 
     <script>
-        
+
 
         //L.mapbox.accessToken = config.mapboxAccessToken;
 // Create a map in the div #map
 		var bounds = L.latLngBounds(L.latLng(config.south,config.west), L.latLng(config.north,config.east));
-        var map = L.map('map', { 
+        var map = L.map('map', {
             center: config.mapFocus,
-            zoom: 13, minZoom : 13, maxzoom: 17, maxBounds : bounds, zoomControl :false });
+            zoom: 7, minZoom : 7, maxzoom: 19, maxBounds : bounds, zoomControl :false });
         map.touchZoom.enable();
         L.control.zoom({position : 'bottomleft'}).addTo(map);
-		    
+
         //Positron basemap
-        var CartoDB_PositronNoLabels = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
-            subdomains: 'abcd',
+        var CartoDB_PositronNoLabels = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_nolabels/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/attribution">CARTO</a>',
             maxZoom: 19
         });
         CartoDB_PositronNoLabels.addTo(map);
-        
-        
+
+
             //Empty to store markers after they are submitted
         var submittedData = L.geoJson(false, {
             onEachFeature: function (feature, layer) {
               layer.bindPopup('<b>'+feature.properties.name +', '+ feature.properties.zipcode +'</b><br>'                               +feature.properties.description +'');
             }
           }).addTo(map);
-        
+
 		//Bug appeared preventing ending of route drawing.
-		map.doubleClickZoom.disable(); 
+		map.doubleClickZoom.disable();
 //		Do nothing on right-click
 		map.on('contextmenu', []);
-		
+
 		//Adding the left Bar of icons as a leaflet control panel
 		var leftBar = L.control({position: 'topleft'});
-	
+
 		//Inspiration: http://stackoverflow.com/a/25764322/4047679
 		//More insiration: http://stackoverflow.com/questions/18673860/defining-a-html-template-to-append-using-jquery
-		
+
 		var hiddenInteractionButtonsTemplate = $('#hidden-interaction-buttons-template').html();
 
 		leftBar.onAdd = function(map){
@@ -140,20 +139,20 @@
 		};
 
 		leftBar.addTo(map);
-		
-		
-		//Adding layer of labels	
-		var labelLayer = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}.png', {
-            "attribution": '&copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
+
+
+		//Adding layer of labels
+		var labelLayer = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_only_labels/{z}/{x}/{y}.png', {
+            "attribution": '&copy; <a href="https://carto.com/attribution">CARTO</a>',
             "maxzoom": 17,
-        	"minzoom": 13, 
+        	"minzoom": 13,
             "pane":"markerPane"}).addTo(map);
 //		markerPane.appendChild(labelLayer.getContainer());
-		//See for explanation of zindex level http://stackoverflow.com/q/35092858/4047679 
+		//See for explanation of zindex level http://stackoverflow.com/q/35092858/4047679
 //		labelLayer.setZIndex(5);
-		
 
-		
+
+
             //Empty to store drawn routes after they are submitted
         var submittedRoutes = new L.geoJson(false, {
             onEachFeature: function (feature, layer) {
@@ -171,9 +170,9 @@
         var drawnMarkers = new L.FeatureGroup();
 		map.addLayer(drawnMarkers);
         var drawnRoute = new L.FeatureGroup();
-        
 
-        
+
+
         var drawControl = new L.Control.Draw({
           draw : {
             polygon : false,
@@ -184,27 +183,27 @@
           edit : false,
           remove: false
         });
-        
+
         markerDrawer =  new L.Draw.Marker(map, drawControl.options.marker);
-        
+
         map.on('draw:created', function (e) {
             var layer = e.layer;
             drawnMarkers.addLayer(layer);
             dialog.dialog( "open" );
-        });        
-        
-		 	/*#left-bar buttons*/ 
+        });
+
+		 	/*#left-bar buttons*/
         /* button that triggers adding a marker */
         $("#add-point").on("click", function(event){
 			event.stopPropagation();
 			if(validInput===false){
-				dialogGlobal.data('clicked','add-point').dialog( "open" );           	
+				dialogGlobal.data('clicked','add-point').dialog( "open" );
             }
             else if(validInput){
 				drawingPoints();
 			}
         });
-		
+
 		/* button that triggers drawing a route */
         $("#add-route").on("click", function(event) {
 			event.stopPropagation();
@@ -213,18 +212,18 @@
 			}
             else if(validInput){
 				drawingRoute();
-            }			
+            }
         });
 
 
-		
-		
+
+
 		/*Button that triggers the initial walkthrough again*/
 		$("#about").on("click", function(event){
 			event.stopPropagation();
 		     $.prompt(tourStates,{zIndex: 1200});
 		});
-		
+
 		$("#cancel").on("click", function(event){
 			event.stopPropagation();
 			if(routeDraw){
@@ -240,7 +239,7 @@
 			$("#cancel").hide();
 			$("#save").hide();
 		});
-		
+
 		$("#save").on("click", function(event){
 			event.stopPropagation();
 			dialog.dialog("open");
@@ -250,7 +249,7 @@
 		$("#save").hide();
 
 		/*End #left-bar buttons*/
-        
+
 		//Dialog of global user variables
 		dialogGlobal = $( "#dialogGlobal" ).dialog({
 			  autoOpen: false,
@@ -277,7 +276,7 @@
 					}
 					else if($(this).data('clicked')=='add-point'){
 						drawingPoints();
-					} 
+					}
 				}
 				else{
 					validInput = false;
@@ -297,12 +296,12 @@
 				$("#dialogGlobal").keydown(function(e) {
 				  if (e.keyCode == $.ui.keyCode.ENTER) {
 					$("#globalAccept").trigger("click");
-				  }    
+				  }
 				});
-				
+
 			}
 		});
-		
+
 		$("#globalAccept").on("touchstart", function() {
 				var checkedValues = dialogGlobalChecker(username.value, zipcode.value);
 				if (checkedValues.valid){
@@ -316,7 +315,7 @@
 					}
 					else if($(this).data('clicked')=='add-point'){
 						drawingPoints();
-					} 
+					}
 				}
 				else{
 					validInput = false;
@@ -326,7 +325,7 @@
 					}
 				}
 			});
-		
+
         /* dialog that appears after finishing a drawing */
       dialog = $( "#dialog" ).dialog({
           autoOpen: false,
@@ -373,12 +372,12 @@
 			  $( "#dialog" ).keydown(function(e) {
 					  if (e.keyCode == $.ui.keyCode.ENTER) {
 						$("#dialogSaveInput").trigger("click");
-					  }    
+					  }
 					});
-			
+
           }
     });
-        
+
 	function dialogGlobalChecker(name, zip) {
             var error = [];
             var valid = true;
@@ -393,12 +392,12 @@
                 error.push("Your zipcode is invalid.");
                 valid = false;
             }
-            return {valid: valid, error: error};        
+            return {valid: valid, error: error};
     }
-     
-		
+
+
 	$(".ui-front").css('z-index','1005');
-		
+
 	//Functions to initiate drawing
 	function drawingRoute(){
 		$("#add-route").addClass('icon-click');
@@ -425,35 +424,35 @@
 		markerDrawer.enable();
 		markerDraw = true;
 	}
-		
+
 	function stopDrawingPoints(){
 		$("#add-point").removeClass('icon-click');
 		$("#cancel").hide();
 		markerDrawer.disable();
 		markerDraw = false;
 	}
-	
+
     function setData() {
       var enteredDescription = "'"+description.value+"'";
     //Convert the drawing to a GeoJSON to pass to the CartoDB sql database
-            
+
       var drawing = "";
         if(routeDraw){
             var submittedLine = currentLine.polyline.toGeoJSON();
-            
+
             drawing = "'"+JSON.stringify(submittedLine.geometry)+"'";
-            
+
             //To ensure that drawn routes remain on map after saving, with popup.
-            
+
             submittedLine.properties.description = description.value;
             submittedLine.properties.name = username.value;
             submittedLine.properties.zipcode = zip;
             submittedLine.properties.color = currentLine.polyline.options.color;
             submittedLine.properties.weight = currentLine.polyline.options.weight;
             submittedLine.properties.opacity= currentLine.polyline.options.opacity;
-            
+
             submittedRoutes.addData(submittedLine);
-            
+
             routeNum ++;
 			stopRouteDraw();
 			$("#cancel").hide();
@@ -464,7 +463,7 @@
                 //Convert the drawing to a GeoJSON to pass to the CartoDB sql database
                 var newData = layer.toGeoJSON();
                 drawing = "'"+JSON.stringify(newData.geometry)+"'";
-                
+
                 // Transfer drawing to the CartoDB layer
                   newData.properties.description = description.value;
                   newData.properties.name = username.value;
@@ -472,7 +471,7 @@
                 submittedData.addData(newData);
             });
 			stopDrawingPoints();
-			
+
         };
 
         refreshLayer();
@@ -486,11 +485,11 @@
       sql += ","+zip+");";
 
 //        console.log(sql); //For testing
-            
+
     //Sending the data
       $.ajax({
         type: 'POST',
-        url: 'https://'+config.cartoDBusername+'.cartodb.com/api/v2/sql',
+        url: 'https://'+config.cartoDBusername+'.carto.com/api/v2/sql',
         crossDomain: true,
         data: {"q":sql},
         dataType: 'json',
@@ -499,11 +498,12 @@
 
         },
         error: function (responseData, textStatus, errorThrown) {
+            console.log(responseData);
 
             console.log("Problem saving the data");
         }
       });
-        
+
         dialog.dialog("close");
     };
       /*  QGIS layer*/
@@ -577,13 +577,13 @@
             });
         layerOrder[layerOrder.length] = json_bikefacilitiesJSON;
         feature_group.addLayer(json_bikefacilitiesJSON);
-        
+
        L.control.layers({},{'<b>Bike Facilities</b><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="img/legend/bikefacilities_Offstreet.png" /> Offstreet<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="img/legend/bikefacilities_Cycletrack.png" /> Cycletrack<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="img/legend/bikefacilities_Buffered.png" /> Buffered<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="img/legend/bikefacilities_Bikelane.png" /> Bikelane<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="img/legend/bikefacilities_Sharrow.png" /> Sharrow<br />': json_bikefacilitiesJSON},{collapsed:false}).addTo(map);
-        
+
 		L.control.scale({options: {position: 'bottomleft', maxWidth: 100, metric: true, imperial: false, updateWhenIdle: false}}).addTo(map);
         $(".leaflet-left .leaflet-control-scale").css({"display": "inline-block","float": "none"});
 		//http://stackoverflow.com/a/37173967/4047679
-		
+
         stackLayers();
 
     var deviceIsMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent);
@@ -597,9 +597,9 @@
 				locateOptions: {maxZoom: 17}
 			}).addTo(map);
 		}
-        
+
     function refreshLayer() {
-             
+
         if(markerDraw){
             map.removeLayer(drawnMarkers);
             drawnMarkers = new L.FeatureGroup();
@@ -608,8 +608,8 @@
             drawnRoute = new L.FeatureGroup();
         }
     };
-        
-        
+
+
         /* Impromptu dialogs */
         var tourSubmitFunc = function(e,v,m,f){
 			if(v === -1){
@@ -666,7 +666,7 @@
                 submit:tourSubmitFunc
             }
          ];
-        
+
 		if (deviceIsMobile) {
           tourStates = [
               {
@@ -690,12 +690,12 @@
                focus: 1,
                submit: tourSubmitFunc
 	       }
-          ]   
+          ]
         }
 
-        
+
         $.prompt(tourStates, {zIndex: 1200});
-            
+
     </script>
   </body>
 </html>

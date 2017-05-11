@@ -3,22 +3,22 @@ DROP FUNCTION IF EXISTS insert_bikeways_data(text,text,text,text);
 
 CREATE OR REPLACE FUNCTION insert_bikeways_data (
     _geojson TEXT,
-    _notes TEXT,
+    _description TEXT,
     _name TEXT,
     _zip TEXT)
 --Has to return something in order to be used in a "SELECT" statement
 RETURNS integer
 AS $$
-DECLARE 
+DECLARE
     _the_geom GEOMETRY;
 BEGIN
-    --Convert the GeoJSON to a geometry type for insertion. 
-    _the_geom := ST_SetSRID(ST_GeomFromGeoJSON(_geojson),4326); 
+    --Convert the GeoJSON to a geometry type for insertion.
+    _the_geom := ST_SetSRID(ST_GeomFromGeoJSON(_geojson),4326);
 
-    EXECUTE ' INSERT INTO bikeways (the_geom, notes, name, zipcode)
+    EXECUTE ' INSERT INTO bikeways (the_geom, description, name, zipcode)
             VALUES ($1, $2, $3, $4)
-            ' USING _the_geom, _notes, _name, _zip;
-            
+            ' USING _the_geom, _description, _name, _zip;
+
     RETURN 1;
 END;
 $$

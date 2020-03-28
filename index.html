@@ -34,12 +34,12 @@
  
     <div id="map" title=""></div>
     
-    <div id="dialogGlobal" title="About You">     
+    <div id="dialogGlobal" title="Informacje o Tobie">     
       <form>
         <fieldset style="border: none;">
           <ul style="list-style-type: none; padding-left: 0px">
-            <li><label for="username">Podaj imię</label></li>
-            <li><input type="text" name="username" id="username" placeholder="Wpisz imię" pattern="[A-Za-z]{3,}" title="Imię musi składać się z co najmnie 3 liter" class="text ui-widget-content ui-corner-all" required></li>
+            <li><label for="username">Podaj nazwę użytkownika</label></li>
+            <li><input type="text" name="username" id="username" placeholder="Wpisz nazwę użytkownika" pattern="[A-Za-z]{3,}" title="Nazwa musi składać się z co najmnie 3 liter" class="text ui-widget-content ui-corner-all" required></li>
             <li><label for="zipcode">Wprowadź kod pocztowy</label></li>
             <li><input type="text" name="zipcode" maxlength="5" pattern="[0-9]{5}" id="zipcode" title="Wprowadź 5 cyfrowy kod pocztowy" placeholder="02134" class="text ui-widget-content ui-corner-all" required></li>
 			<li><label for="email">Twój Email (opcjonalnie)</label></li>
@@ -54,7 +54,7 @@
       <form>
         <fieldset style="border: none;">
           <ul style="list-style-type: none; padding-left: 0px">
-            <li><label for="description">About this</label></li>
+            <li><label for="description">Krótki opis</label></li>
             <li><input type="text" name="description" id="description" placeholder="Opis wyboru" class="text ui-widget-content ui-corner-all"></li>
           </ul>
           <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
@@ -101,7 +101,7 @@
 			div.innerHTML = '<div id="add-route" class="circle type1 icon-hover tooltip" title="Rysuj ścieżki, którymi poruszasz się pieszo">'
 				+'<i class="fa fa-pencil fa-3x fa-inverse"></i>'
 				+'</div>'
-				+'  <div id="add-point" class="circle type1 icon-hover tooltip" title="Dodaj punkt, w którym spędzasz czas lub który jest istotny ze względu na zagrożenie">'
+				+'  <div id="add-point" class="circle type1 icon-hover tooltip" title="Dodaj punkt, w którym spędzasz czas lub który jest istotny z innych względów (np. zagrożenie)">'
 				+'<i class="fa fa-map-marker fa-inverse fa-3x"></i>'
 				+'</div><br>'
 				+'<div id="about" class="circle type1 icon-hover tooltip" title="Więcej informacji">'
@@ -335,12 +335,12 @@
 
           }
           , open: function() {
-              var _title = "Tell us about this";
+              var _title = "Opisz wybór";
               if (markerDraw){
-                  _title += " location";
+                  _title += " lokalizacji";
               }
               else if (routeDraw){
-                  _title += " route";
+                  _title += " ścieżki";
               }
               $( "#dialog" ).dialog( "option", "title",_title);
               
@@ -351,14 +351,14 @@
             var error = [];
             var valid = true;
             if(name.length < 3) {
-                error.push("Your name is too short.");
+                error.push("Nazwa użytkownika jest za krótka.");
                 valid = false;
             }
             if(zip.length < 5){
-                error.push("Your zipcode is too short.");
+                error.push("Kod pocztowy jest za krótki.");
                 valid = false;
             }else if(!/(^\d{5}$)/.test(zip)){
-                error.push("Your zipcode is invalid.");
+                error.push("Nieprawidłowy kod pocztowy - wpisz 5 cyfr bez myślnika '-'.");
                 valid = false;
             }
 			if(email.length > 0){
@@ -574,9 +574,9 @@
         },
         tourStates = [
 	       {
-                title: "Welcome",
+                title: "Witam i dziękuję za zainteresowanie!",
                html: config.walkthroughWelcome,
-               buttons:{'I already know':0,'How do I use this?':1},
+               buttons:{'Już wiem':0,'Jak wprowadzać dane?':1},
                focus: 1,
                submit: tourSubmitFunc
 	       },
@@ -589,25 +589,25 @@
                 submit:tourSubmitFunc
             },
             {
-                title:"Enable Drawing",
-                html:"Click on either <span class='fa-stack fa-lg'><i class='fa fa-circle fa-stack-2x'></i><i class='fa fa-map-marker fa-inverse fa-stack-1x'></i></span> or <span class='fa-stack fa-lg'><i class='fa fa-circle fa-stack-2x'></i><i class='fa fa-pencil fa-inverse fa-stack-1x'></i></span> to start giving your input. First we'll want you to enter your first name and zipcode.<br> After that you'll be able to add your input to the map!",
-                buttons:{'Go back':-1,'I\'m done':0,'Tell me more!':1},
+                title:"Zacznij rysować",
+                html:"Kliknij na <span class='fa-stack fa-lg'><i class='fa fa-circle fa-stack-2x'></i><i class='fa fa-map-marker fa-inverse fa-stack-1x'></i></span> lub <span class='fa-stack fa-lg'><i class='fa fa-circle fa-stack-2x'></i><i class='fa fa-pencil fa-inverse fa-stack-1x'></i></span> aby zacząć wprowadzać dane. Najpierw zostaniesz poproszony/a o podanie nazwy użytkownika i Twojego kodu pocztowego.<br> Po czym będziesz mógł/mogła wprowadzać dane na mapie!",
+                buttons:{'Wróć':-1,'Zakończ przewodnik':0,'Więcej informacji!':1},
                 position: { container: '#leftBar', x: 150, y: 0, width: 300, arrow: 'lt' },
                 focus:2,
                 submit:tourSubmitFunc
             },
             {
-                title:"Click on <span class='fa-stack fa-lg'><i class='fa fa-circle fa-stack-2x'></i><i class='fa fa-map-marker fa-inverse fa-stack-1x'></i></span> and Place a Marker on the Map",
-                html:"<div class = 'img-container'><img src='img/add_marker.gif'></div><br>Tell us about dangerous intersections, potholes, etc. When you click 'Save Input' your marker and description are sent to our database.",
-                buttons:{'Go back':-1,'I\'m done':0,'Tell me more!':1},
+                title:"Kliknij na <span class='fa-stack fa-lg'><i class='fa fa-circle fa-stack-2x'></i><i class='fa fa-map-marker fa-inverse fa-stack-1x'></i></span> i wstaw Punkt na mapie",
+                html:"<div class = 'img-container'><img src='img/add_marker.gif'></div><br>Wybierz z rozwijanych list rodzaj aktywności i nastrój jaki Ci towarzyszy podczas przebywania w określonym miejscu, oraz krótko opisz swój wybór - co wpływa pozytywnie/negatywnie na Twoje samopoczucie w danym miejscu, czy istnieją tam jakieś zagrożenia, inne elementy warte uwagi (pozytywne jak i negatywne) itp.? Gdy klikniesz 'Zapisz' Twój punkt i opis są wysłane do mojej bazy danych.",
+                buttons:{'Wróć':-1,'Zakończ przewodnik':0,'Więcej informacji!':1},
                 position:{width:500},
                 focus:2,
                 submit:tourSubmitFunc
             },
             {
-                title:"Or Click on <span class='fa-stack fa-lg'><i class='fa fa-circle fa-stack-2x'></i><i class='fa fa-pencil fa-inverse fa-stack-1x'></i></span> to Draw a Route",
-                html:"<div class = 'img-container'><img src='img/draw_route.gif'></div><br>Routes can indicate your entire commute, or small locations where bike lanes are missing, or frequently blocked... Click to add points to form a route. Double click on the final point to end that route, and then write a description. You are welcome to input as many routes as you please",
-                buttons:{'Go back':-1,'I\'m ready!':0},
+                title:"Kliknij na <span class='fa-stack fa-lg'><i class='fa fa-circle fa-stack-2x'></i><i class='fa fa-pencil fa-inverse fa-stack-1x'></i></span> aby rysować odcinki ścieżek",
+                html:"<div class = 'img-container'><img src='img/draw_route.gif'></div><br>Ścieżki mogą przedstawiać jedną trasę lub jej małe odcinki jeśli wywołują one u Ciebie rożne odczucia - pozytywne/obojętne/negatywne - (w tym przypadku każdy odcinek rysuj osobno). Kliknij aby dodać punkt. Kliknij dwukrotnie aby zakończyć rysowanie, a następnie dodać opis. Możesz wprowadzać dowolną liczbę tras.",
+                buttons:{'Wróć':-1,'Jestem gotowy!':0},
                 position:{width:500},
                 focus:1,
                 submit:tourSubmitFunc
